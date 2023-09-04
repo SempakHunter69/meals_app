@@ -6,9 +6,11 @@ class MealDetailsPage extends StatelessWidget {
   const MealDetailsPage({
     super.key,
     required this.meal,
+    required this.onToggleFavorite,
   });
 
   final Meal meal;
+  final void Function(Meal meal) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,14 @@ class MealDetailsPage extends StatelessWidget {
           title: Text(
             meal.title,
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                onToggleFavorite(meal);
+              },
+              icon: const Icon(Icons.star),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(

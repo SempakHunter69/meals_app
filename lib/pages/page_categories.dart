@@ -4,11 +4,20 @@ import 'package:meals_app/model/model_category.dart';
 import 'package:meals_app/pages/page_meals.dart';
 import 'package:meals_app/widget/widget_category_item.dart';
 
+import '../model/model_meal.dart';
+
 class CategoriesPage extends StatelessWidget {
-  const CategoriesPage({super.key});
+  const CategoriesPage({
+    super.key,
+    required this.onToggleFavorite,
+    required this.availableMeals,
+  });
+
+  final void Function(Meal meal) onToggleFavorite;
+  final List<Meal> availableMeals;
 
   void _selectCategory(BuildContext context, Category category) {
-    final filterMeals = dummyMeals
+    final filterMeals = availableMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
 
@@ -17,6 +26,7 @@ class CategoriesPage extends StatelessWidget {
         builder: (ctx) => MealsPage(
           title: category.title,
           meals: filterMeals,
+          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );
@@ -24,31 +34,24 @@ class CategoriesPage extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Pick Your Categories'),
-        ),
-        body: GridView(
-          padding: const EdgeInsets.all(24),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-          ),
-          children: [
-            //availableCategories.map((category) => CategoryItem(category: category)).toList()
-            for (final category in availableCategories)
-              CategoryItem(
-                category: category,
-                onSelectCategory: () {
-                  _selectCategory(context, category);
-                },
-              )
-          ],
-        ),
+    return GridView(
+      padding: const EdgeInsets.all(24),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
+      children: [
+        //availableCategories.map((category) => CategoryItem(category: category)).toList()
+        for (final category in availableCategories)
+          CategoryItem(
+            category: category,
+            onSelectCategory: () {
+              _selectCategory(context, category);
+            },
+          )
+      ],
     );
   }
 }
