@@ -9,11 +9,9 @@ import '../model/model_meal.dart';
 class CategoriesPage extends StatelessWidget {
   const CategoriesPage({
     super.key,
-    required this.onToggleFavorite,
     required this.availableMeals,
   });
 
-  final void Function(Meal meal) onToggleFavorite;
   final List<Meal> availableMeals;
 
   void _selectCategory(BuildContext context, Category category) {
@@ -26,7 +24,6 @@ class CategoriesPage extends StatelessWidget {
         builder: (ctx) => MealsPage(
           title: category.title,
           meals: filterMeals,
-          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );
